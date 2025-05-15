@@ -1,4 +1,4 @@
-fs-comfyui-frontend-package==1.20.1
+fs-comfyui-frontend-package==1.20.2
 comfyui-workflow-templates==0.1.14
 torch
 torchsde
