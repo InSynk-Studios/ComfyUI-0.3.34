@@ -482,7 +482,7 @@ class PromptExecutor:
                 "current_inputs": error["current_inputs"],
                 "current_outputs": list(current_outputs),
             }
-            self.add_message("execution_error", mes, broadcast=False)
+            self.add_message("execution_error", mes, broadcast=True)
 
     def execute(self, prompt, prompt_id, extra_data={}, execute_outputs=[]):
         nodes.interrupt_processing(False)
@@ -493,7 +493,7 @@ class PromptExecutor:
             self.server.client_id = None
 
         self.status_messages = []
-        self.add_message("execution_start", { "prompt_id": prompt_id}, broadcast=False)
+        self.add_message("execution_start", { "prompt_id": prompt_id}, broadcast=True)
 
         with torch.inference_mode():
             dynamic_prompt = DynamicPrompt(prompt)
@@ -510,7 +510,7 @@ class PromptExecutor:
             comfy.model_management.cleanup_models_gc()
             self.add_message("execution_cached",
                           { "nodes": cached_nodes, "prompt_id": prompt_id},
-                          broadcast=False)
+                          broadcast=True)
             pending_subgraph_results = {}
             executed = set()
             execution_list = ExecutionList(dynamic_prompt, self.caches.outputs)
@@ -535,7 +535,7 @@ class PromptExecutor:
                     execution_list.complete_node_execution()
             else:
                 # Only execute when the while-loop ends without break
-                self.add_message("execution_success", { "prompt_id": prompt_id }, broadcast=False)
+                self.add_message("execution_success", { "prompt_id": prompt_id }, broadcast=True)
 
             ui_outputs = {}
             meta_outputs = {}
